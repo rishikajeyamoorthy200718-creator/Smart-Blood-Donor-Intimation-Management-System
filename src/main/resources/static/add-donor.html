@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Donor - Smart Blood Donor System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6f8;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: #9f1515;
+            color: white;
+            padding: 35px 18px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo .icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .logo h2 {
+            font-size: 21px;
+            line-height: 1.4;
+        }
+
+        .menu a {
+            display: block;
+            padding: 16px 20px;
+            margin-bottom: 8px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: #c51c1c;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            left: 18px;
+            right: 18px;
+            background: #7d0d0d;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 280px;
+            padding: 35px 42px;
+        }
+
+        .top-bar {
+            margin-bottom: 30px;
+        }
+
+        .top-bar h1 {
+            font-size: 30px;
+        }
+
+        .top-bar p {
+            color: #777;
+            margin-top: 7px;
+            font-size: 16px;
+        }
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+            max-width: 950px;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .form-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .form-description {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #b71c1c;
+        }
+
+        .required {
+            color: #b71c1c;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .register-btn {
+            background: #b71c1c;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            background: #8f1515;
+        }
+
+        .cancel-btn {
+            background: #eee;
+            color: #333;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 7px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background: #ddd;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* INFO BOX */
+
+        .info-box {
+            margin-top: 25px;
+            max-width: 950px;
+            background: #fff5f5;
+            border-left: 5px solid #b71c1c;
+            padding: 18px 20px;
+            border-radius: 6px;
+        }
+
+        .info-box h3 {
+            color: #b71c1c;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                margin-left: 220px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        <div class="icon">🩸</div>
+
+        <h2>
+            Smart Blood Donor<br>
+            System
+        </h2>
+    </div>
+
+
+    <div class="menu">
+
+        <a href="/dashboard.html">
+            📊 Dashboard
+        </a>
+
+        <a href="/donors.html">
+            👥 Donor Management
+        </a>
+
+        <a href="/add-donor.html" class="active">
+            ➕ Add Donor
+        </a>
+
+        <a href="/matching.html">
+            🔎 Donor Matching
+        </a>
+
+        <a href="/eligibility.html">
+            ✅ Eligibility
+        </a>
+
+        <a href="/notifications.html">
+            📧 Notifications
+        </a>
+
+    </div>
+
+
+    <div class="logout" onclick="logout()">
+        🚪 Logout
+    </div>
+
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+    <div class="top-bar">
+
+        <h1>Add New Donor</h1>
+
+        <p>
+            Register a new blood donor in the system
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <h2>Donor Information</h2>
+
+        <p class="form-description">
+            Enter the donor's details carefully. All required fields must be completed.
+        </p>
+
+
+        <form id="donorForm">
+
+            <div class="form-grid">
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name <span class="required">*</span>
+                    </label>
+
+                    <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter full name"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- AGE -->
+
+                <div class="form-group">
+
+                    <label for="age">
+                        Age <span class="required">*</span>
+                    </label>
+
+                    <input
+                            type="number"
+                            id="age"
+                            min="18"
+                            max="65"
+                            placeholder="Enter age"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- GENDER -->
+
+                <div class="form-group">
+
+                    <label for="gender">
+                        Gender <span class="required">*</span>
+                    </label>
+
+                    <select id="gender" required>
+
+                        <option value="">
+                            Select gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BLOOD GROUP -->
+
+                <div class="form-group">
+
+                    <label for="bloodGroup">
+                        Blood Group <span class="required">*</span>
+                    </label>
+
+                    <select id="bloodGroup" required>
+
+                        <option value="">
+                            Select blood group
+                        </option>
+
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CITY -->
+
+                <div class="form-group">
+
+                    <label for="city">
+                        City <span class="required">*</span>
+                    </label>
+
+                    <select id="city" required>
+
+                        <option value="">
+                            Select city
+                        </option>
+
+                        <option value="Kundrathur">
+                            Kundrathur
+                        </option>
+
+                        <option value="Pallavaram">
+                            Pallavaram
+                        </option>
+
+                        <option value="Guindy">
+                            Guindy
+                        </option>
+
+                        <option value="Velachery">
+                            Velachery
+                        </option>
+
+                        <option value="Poonamallee">
+                            Poonamallee
+                        </option>
+
+                        <option value="Tambaram">
+                            Tambaram
+                        </option>
+
+                        <option value="Melambakkam">
+                            Melambakkam
+                        </option>
+
+                        <option value="Porur">
+                            Porur
+                        </option>
+
+                        <option value="Chrompet">
+                            Chrompet
+                        </option>
+
+                        <option value="Avadi">
+                            Avadi
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number <span class="required">*</span>
+                    </label>
+
+                    <input
+                            type="tel"
+                            id="phone"
+                            placeholder="Enter phone number"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address <span class="required">*</span>
+                    </label>
+
+                    <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter email address"
+                            required
+                    >
+
+                </div>
+
+
+                <!-- LAST DONATION -->
+
+                <div class="form-group">
+
+                    <label for="lastDonationDate">
+                        Last Donation Date <span class="required">*</span>
+                    </label>
+
+                    <input
+                            type="date"
+                            id="lastDonationDate"
+                            required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+                <button
+                        type="submit"
+                        class="register-btn">
+                    Register Donor
+                </button>
+
+                <button
+                        type="button"
+                        class="cancel-btn"
+                        onclick="window.location.href='/donors.html'">
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <p id="message"></p>
+
+    </div>
+
+
+    <!-- INFORMATION -->
+
+    <div class="info-box">
+
+        <h3>Important Information</h3>
+
+        <p>
+            Donor eligibility is automatically calculated based on the
+            last donation date. A donor becomes eligible after the required
+            waiting period.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* REGISTER DONOR */
+
+    document
+        .getElementById("donorForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const donor = {
+
+                name:
+                document.getElementById("name").value,
+
+                age:
+                    parseInt(
+                        document.getElementById("age").value
+                    ),
+
+                gender:
+                document.getElementById("gender").value,
+
+                bloodGroup:
+                document.getElementById("bloodGroup").value,
+
+                city:
+                document.getElementById("city").value,
+
+                phone:
+                document.getElementById("phone").value,
+
+                email:
+                document.getElementById("email").value,
+
+                lastDonationDate:
+                document.getElementById("lastDonationDate").value
+
+            };
+
+
+            const message =
+                document.getElementById("message");
+
+
+            try {
+
+                const response =
+                    await fetch("/donors", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(donor)
+
+                    });
+
+
+                if (response.ok) {
+
+                    message.style.color = "green";
+
+                    message.textContent =
+                        "✅ Donor registered successfully!";
+
+
+                    document
+                        .getElementById("donorForm")
+                        .reset();
+
+
+                    setTimeout(function() {
+
+                        window.location.href =
+                            "/donors.html";
+
+                    }, 1500);
+
+                }
+
+                else {
+
+                    const errorText =
+                        await response.text();
+
+                    message.style.color = "red";
+
+                    message.textContent =
+                        "❌ Unable to register donor.";
+
+                    console.error(errorText);
+
+                }
+
+            }
+
+            catch (error) {
+
+                message.style.color = "red";
+
+                message.textContent =
+                    "❌ Unable to connect to the server.";
+
+                console.error(error);
+
+            }
+
+        });
+
+
+    /* LOGOUT */
+
+    function logout() {
+
+        window.location.href =
+            "/login.html";
+
+    }
+
+</script>
+
+</body>
+</html>

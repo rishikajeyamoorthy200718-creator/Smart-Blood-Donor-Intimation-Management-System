@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Eligibility - Smart Blood Donor System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: #a91414;
+            color: white;
+            padding: 30px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo .drop {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .logo h2 {
+            font-size: 24px;
+            line-height: 1.3;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 16px 18px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 17px;
+        }
+
+        .menu a:hover {
+            background: #c51d1d;
+        }
+
+        .menu a.active {
+            background: #d52323;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+            background: #850d0d;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 280px;
+            padding: 40px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 17px;
+        }
+
+        /* SEARCH CARD */
+
+        .search-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin-bottom: 30px;
+        }
+
+        .search-card h2 {
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #b71c1c;
+        }
+
+        .check-button {
+            background: #b71c1c;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .check-button:hover {
+            background: #8f1515;
+        }
+
+        /* RESULT */
+
+        .result-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            max-width: 900px;
+        }
+
+        .result-card h2 {
+            margin-bottom: 25px;
+            font-size: 23px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px;
+            color: #777;
+        }
+
+        .empty-state .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .donor-name {
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .donor-id {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .status {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .status.eligible {
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .status.not-eligible {
+            background: #fdeaea;
+            color: #b71c1c;
+        }
+
+        .status-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .status-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .detail-box {
+            background: #f7f7f7;
+            padding: 18px;
+            border-radius: 8px;
+        }
+
+        .detail-box .label {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .detail-box .value {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                margin-left: 220px;
+                padding: 25px;
+            }
+
+            .search-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .check-button {
+                width: 100%;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <div class="drop">🩸</div>
+
+        <h2>
+            Smart Blood Donor<br>
+            System
+        </h2>
+
+    </div>
+
+
+    <div class="menu">
+
+        <a href="/dashboard.html">
+            📊 Dashboard
+        </a>
+
+        <a href="/donors.html">
+            👥 Donor Management
+        </a>
+
+        <a href="/add-donor.html">
+            ➕ Add Donor
+        </a>
+
+        <a href="/matching.html">
+            🔍 Donor Matching
+        </a>
+
+        <a href="/eligibility.html" class="active">
+            ✅ Eligibility
+        </a>
+
+        <a href="/notifications.html">
+            📧 Notifications
+        </a>
+
+    </div>
+
+
+    <div class="logout">
+
+        <a href="/login.html">
+            🚪 Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="page-header">
+
+        <h1>Donor Eligibility</h1>
+
+        <p>
+            Check whether a donor is currently eligible to donate blood.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-card">
+
+        <h2>🔎 Check Donor Eligibility</h2>
+
+        <div class="search-row">
+
+            <div class="form-group">
+
+                <label for="donorId">
+                    Donor ID
+                </label>
+
+                <input
+                        type="number"
+                        id="donorId"
+                        min="1"
+                        placeholder="Enter donor ID"
+                >
+
+            </div>
+
+
+            <button
+                    class="check-button"
+                    onclick="checkEligibility()">
+
+                Check Eligibility
+
+            </button>
+
+        </div>
+
+        <p id="message"></p>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div class="result-card">
+
+        <h2>Eligibility Result</h2>
+
+
+        <div id="result">
+
+            <div class="empty-state">
+
+                <div class="icon">
+                    🩸
+                </div>
+
+                <h3>No Donor Selected</h3>
+
+                <p>
+                    Enter a donor ID above to check eligibility.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    async function checkEligibility() {
+
+        const donorId =
+            document.getElementById("donorId").value;
+
+        const message =
+            document.getElementById("message");
+
+        const result =
+            document.getElementById("result");
+
+
+        /* VALIDATION */
+
+        if (!donorId) {
+
+            message.style.color = "red";
+
+            message.textContent =
+                "Please enter a donor ID.";
+
+            return;
+        }
+
+
+        message.style.color = "#555";
+
+        message.textContent =
+            "Checking eligibility...";
+
+
+        result.innerHTML =
+            `<div class="empty-state">
+
+            <div class="icon">⏳</div>
+
+            <h3>Checking...</h3>
+
+            <p>Please wait.</p>
+
+        </div>`;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/eligibility/" + donorId
+                );
+
+
+            if (!response.ok) {
+
+                if (response.status === 404) {
+
+                    throw new Error(
+                        "Donor not found"
+                    );
+
+                }
+
+                throw new Error(
+                    "Unable to check eligibility"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            message.textContent = "";
+
+
+            const statusClass =
+                data.eligible
+                    ? "eligible"
+                    : "not-eligible";
+
+
+            const statusIcon =
+                data.eligible
+                    ? "✅"
+                    : "⚠️";
+
+
+            const statusText =
+                data.eligible
+                    ? "ELIGIBLE"
+                    : "NOT ELIGIBLE";
+
+
+            result.innerHTML = `
+
+            <div class="donor-name">
+                ${data.donorName}
+            </div>
+
+            <div class="donor-id">
+                Donor ID: ${data.donorId}
+            </div>
+
+
+            <div class="status ${statusClass}">
+
+                <div class="status-icon">
+                    ${statusIcon}
+                </div>
+
+                <div class="status-title">
+                    ${statusText}
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                <div class="detail-box">
+
+                    <div class="label">
+                        Donor ID
+                    </div>
+
+                    <div class="value">
+                        ${data.donorId}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="label">
+                        Donor Name
+                    </div>
+
+                    <div class="value">
+                        ${data.donorName}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="label">
+                        Next Eligible Date
+                    </div>
+
+                    <div class="value">
+                        ${data.nextEligibleDate}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="label">
+                        Current Status
+                    </div>
+
+                    <div class="value">
+                        ${statusText}
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            message.style.color = "red";
+
+
+            if (error.message === "Donor not found") {
+
+                message.textContent =
+                    "❌ Donor not found. Please check the donor ID.";
+
+            } else {
+
+                message.textContent =
+                    "❌ Unable to connect to the server.";
+
+            }
+
+
+            result.innerHTML =
+                `<div class="empty-state">
+
+                <div class="icon">⚠️</div>
+
+                <h3>Unable to Check Eligibility</h3>
+
+                <p>
+                    Please verify the donor ID and make sure
+                    the Spring Boot application is running.
+                </p>
+
+            </div>`;
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

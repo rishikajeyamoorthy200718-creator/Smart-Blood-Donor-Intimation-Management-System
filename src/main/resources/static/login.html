@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login - Blood Donor Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #b71c1c;
+            color: white;
+            padding: 20px 50px;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        .login-container {
+            width: 400px;
+            max-width: 90%;
+            margin: 80px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: #b71c1c;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #b71c1c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #8f1515;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #b71c1c;
+            text-decoration: none;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🩸 Blood Donor Management System</h1>
+</header>
+
+<div class="login-container">
+
+    <h2>Admin Login</h2>
+
+    <form id="loginForm">
+
+        <label for="username">Username</label>
+        <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                required
+        >
+
+        <label for="password">Password</label>
+        <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+        >
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <a href="/" class="back">← Back to Home</a>
+
+</div>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        try {
+
+            const response = await fetch("/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
+
+            const message = document.getElementById("message");
+
+            if (response.ok) {
+                message.style.color = "green";
+                message.textContent = "Login successful!";
+
+                setTimeout(function() {
+                    window.location.href = "/dashboard.html";
+                }, 1000);
+
+            } else {
+                message.style.color = "red";
+                message.textContent = "Invalid username or password.";
+            }
+
+        } catch (error) {
+
+            document.getElementById("message").style.color = "red";
+            document.getElementById("message").textContent =
+                "Unable to connect to the server.";
+
+        }
+
+    });
+</script>
+
+</body>
+</html>
